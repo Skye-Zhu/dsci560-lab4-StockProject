@@ -17,7 +17,6 @@ def sharpe_ratio(equity: pd.Series, periods_per_year: int, risk_free_rate: float
     if len(r) == 0:
         return 0.0
 
-    #把年化无风险利率换算到每期
     rf_per_period = (1 + risk_free_rate) ** (1 / periods_per_year) - 1
     excess = r - rf_per_period
 
