@@ -1,0 +1,13 @@
+IMPROVED STRATEGY (band + cooldown)
+
+WITHOUT Transaction Cost
+Final portfolio value: 10065.28
+Number of trades: 48
+Annualized return: 0.0774
+Sharpe ratio: 0.5954
+
+WITH Transaction Cost (0.05%)
+Final portfolio value: 9834.23
+Number of trades: 48
+Annualized return: -0.1744
+Sharpe ratio: -1.2686
