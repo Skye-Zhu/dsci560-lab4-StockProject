@@ -1,0 +1,13 @@
+Backtest WITHOUT Transaction Cost
+Initial cash: 10000.0
+Final portfolio value: 10172.21
+Number of trades: 61
+Annualized return (approx): 0.2162
+Sharpe ratio (approx): 1.1578
+
+Backtest WITH Transaction Cost (0.05%)
+Initial cash: 10000.0
+Final portfolio value: 9872.70
+Number of trades: 61
+Annualized return (approx): -0.1366
+Sharpe ratio (approx): -0.7035
