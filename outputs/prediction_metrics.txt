@@ -1,0 +1,3 @@
+One-step-ahead naive prediction: pred(t+1) = price(t)
+MAE:  0.294929
+RMSE: 0.480645
