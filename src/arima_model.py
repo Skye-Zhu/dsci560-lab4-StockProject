@@ -23,9 +23,7 @@ def arima_forecast(
     history = train.tolist()
     predictions = []
 
-    # ===============================
-    # ARIMA rolling forecast
-    # ===============================
+
     for t in range(len(test)):
         model = ARIMA(history, order=order)
         model_fit = model.fit()
@@ -34,9 +32,6 @@ def arima_forecast(
         predictions.append(yhat)
         history.append(test.iloc[t])
 
-    # ===============================
-    # Evaluation metrics
-    # ===============================
     mae = mean_absolute_error(test, predictions)
     rmse = mean_squared_error(test, predictions) ** 0.5
 
@@ -48,23 +43,17 @@ def arima_forecast(
         index=test.index,
     )
 
-    # ===============================
-    # Expected return (no look-ahead)
-    # ===============================
+
     result["expected_ret"] = (
         result["predicted"] - result["actual"].shift(1)
     ) / result["actual"].shift(1)
 
-    # ===============================
-    # Signals
-    # ===============================
+
     result["signal"] = "HOLD"
     result.loc[result["expected_ret"] > threshold, "signal"] = "BUY"
     result.loc[result["expected_ret"] < -threshold, "signal"] = "SELL"
 
-    # ===============================
-    # Position (state)
-    # ===============================
+
     result["position"] = 0
     for i in range(1, len(result)):
         if result.iloc[i]["signal"] == "BUY":
@@ -79,23 +68,16 @@ def arima_forecast(
     return result, mae, rmse
 
 
-# =====================================================
-# Script entry point
-# =====================================================
+
 
 if __name__ == "__main__":
 
-    # ===============================
-    # Project paths
-    # ===============================
+
     ROOT = Path(__file__).resolve().parents[1]
     data_path = ROOT / "data" / "prices.csv"
     out_dir = ROOT / "outputs"
     out_dir.mkdir(exist_ok=True)
 
-    # ===============================
-    # Load data
-    # ===============================
     df = load_prices(str(data_path))
 
     # 目前只处理一个 symbol
@@ -107,9 +89,7 @@ if __name__ == "__main__":
 
     prices = df["price"]
 
-    # ==================================================
-    # 1️⃣ First run: threshold = 0 (inspect distribution)
-    # ==================================================
+
     res, mae, rmse = arima_forecast(
         prices=prices,
         threshold=0.0,
@@ -121,17 +101,12 @@ if __name__ == "__main__":
     print("\nExpected return distribution:")
     print(res["expected_ret"].describe())
 
-    # ==================================================
-    # 2️⃣ Adaptive threshold
-    # ==================================================
+
     std = res["expected_ret"].std()
     threshold = 0.5 * std
 
     print(f"\nUsing threshold = {threshold:.8f}")
 
-    # ==================================================
-    # 3️⃣ Second run: real trading signals
-    # ==================================================
     res, mae, rmse = arima_forecast(
         prices=prices,
         threshold=threshold,
@@ -140,9 +115,7 @@ if __name__ == "__main__":
     print("\nPosition counts:")
     print(res["position"].value_counts())
 
-    # ==================================================
-    # 4️⃣ Save results
-    # ==================================================
+
     res_out = res.copy()
     res_out["symbol"] = symbol
 
