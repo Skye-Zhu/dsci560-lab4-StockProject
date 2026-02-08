@@ -22,8 +22,8 @@ def main():
         d1,
         short_w=10,
         long_w=30,
-        band=0.002,          # 你也可以试 0.003
-        cooldown_bars=12     # 你也可以试 24
+        band=0.003,          #  0.003
+        cooldown_bars=12     #also try 24
     )
 
     out_path = out_dir / f"signals_{symbol}_improved_15m.csv"

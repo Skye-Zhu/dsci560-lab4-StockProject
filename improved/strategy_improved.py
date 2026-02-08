@@ -16,13 +16,7 @@ def signals_sma_band_cooldown(
     cooldown_bars: int = 12,     # 12根5min=60分钟
     price_col: str = "price"
 ) -> pd.DataFrame:
-    """
-    Improved strategy: SMA crossover + band + cooldown
 
-    核心：
-    - band: 只有当 (sma_short - sma_long)/sma_long > band 才认为趋势足够强
-    - cooldown: 每次交易后必须等待 cooldown_bars 个bar，才能允许下一次交易
-    """
     if short_w >= long_w:
         raise ValueError("short_w must be smaller than long_w")
     if cooldown_bars < 0:
@@ -50,18 +44,15 @@ def signals_sma_band_cooldown(
         if cd > 0:
             cd -= 1
 
-        # 默认不交易
+        
         sig = "HOLD"
 
-        # 如果还没到可以交易的时间，就保持原仓位
         if cd == 0:
             want = int(desired_pos.iloc[i])
-
-            # 只有当“想要的仓位”和“当前仓位”不同，才触发交易
             if want == 1 and pos == 0:
                 pos = 1
                 sig = "BUY"
-                cd = cooldown_bars  # 交易后进入冷却
+                cd = cooldown_bars  
             elif want == 0 and pos == 1:
                 pos = 0
                 sig = "SELL"
