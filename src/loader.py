@@ -9,7 +9,6 @@ def load_prices(
 
     df = pd.read_csv(csv_path)
 
-    # 统一列名，方便后续 pipeline 使用
     df = df.rename(columns={
         ts_col: "timestamp",
         symbol_col: "symbol",
@@ -19,7 +18,7 @@ def load_prices(
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     df = df.sort_values(["symbol", "timestamp"]).reset_index(drop=True)
 
-    # 基础清洗
+
     df = df.dropna(subset=["timestamp", "symbol", "price"])
     df = df[df["price"] > 0]
 

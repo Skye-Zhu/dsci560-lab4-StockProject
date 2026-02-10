@@ -12,11 +12,10 @@ def main():
 
     df = load_prices(str(data_path))
 
-    # 目前只有 AAPL，写成按 symbol 分组更通用
+
     symbol = df["symbol"].iloc[0]
     d1 = df[df["symbol"] == symbol].copy()
 
-    # 确保时间升序
     d1 = d1.sort_values("timestamp").reset_index(drop=True)
 
     sig = sma_crossover_signals(d1, short_w=10, long_w=30)

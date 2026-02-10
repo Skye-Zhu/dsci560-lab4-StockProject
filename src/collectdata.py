@@ -15,7 +15,7 @@ def collect_stock_data(
 
     df = df.reset_index()
 
-    # 统一成我们 pipeline 用的格式
+
     df = df.rename(columns={
         "Datetime": "timestamp",
         "Date": "timestamp",
